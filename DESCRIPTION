@@ -4,7 +4,7 @@ Version: 0.0.0.91
 Authors@R: 
     person("Victor", "Yu", email = "victor.yu@hertfordshire.gov.uk", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
-License: GPL (>= 3) + file LICENSE
+License: GPL (>= 3)
 Depends: 
     R (>= 3.5)
 Imports: 
