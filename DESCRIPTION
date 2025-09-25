@@ -1,0 +1,17 @@
+Package: decompositionLE
+Title: Provides easy methods to perform life expectancy decomposition
+Version: 0.0.0.91
+Authors@R: 
+    person("Victor", "Yu", email = "victor.yu@hertfordshire.gov.uk", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+License: GPL (>= 3) + file LICENSE
+Depends: 
+    R (>= 3.5)
+Imports: 
+    dplyr,
+    magrittr,
+    stringr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
