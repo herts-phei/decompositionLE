@@ -17,7 +17,7 @@ implementation of life expectancy decomposition formulas for age bands,
 derived from *Ponnapalli , K. (2005). A comparison of different methods
 for decomposition of changes in expectation of life at birth and
 differentials in life expectancy at birth. Demographic Research, 12,
-pp.141–172. <doi:https://doi.org/10.4054/demres.2005.12.7>.* In
+pp.141–172. doi: <https://doi.org/10.4054/demres.2005.12.7>.* In
 addition, there is a decomposition function for disease cause breakdown,
 as well as some useful helper plot functions.
 
