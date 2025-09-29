@@ -1,0 +1,35 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# decompositionLE
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/decompositionLE)](https://CRAN.R-project.org/package=decompositionLE)
+[![Codecov test coverage](https://codecov.io/gh/herts-phei/decompositionLE/graph/badge.svg)](https://app.codecov.io/gh/herts-phei/decompositionLE)
+[![R-CMD-check](https://github.com/herts-phei/decompositionLE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/decompositionLE/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+The goal of **decompositionLE** is to provide an easy to use implementation of life expectancy decomposition formulas for age bands, derived from Ponnapalli , K. (2005). A comparison of different methods for decomposition of changes in expectation of life at birth and differentials in life expectancy at birth. Demographic Research, 12, pp.141–172. doi:https://doi.org/10.4054/demres.2005.12.7. In addition, there is a decomposition function for disease cause breakdown, as well as some useful helper plot functions.
+
+## Installation
+
+You can install the development version of decompositionLE from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("herts-phei/decompositionLE")
+```
+
+## Example
