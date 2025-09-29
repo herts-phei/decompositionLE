@@ -33,5 +33,6 @@ pak::pak("herts-phei/decompositionLE")
 
 ## Example
 
-The package contains a built-in dataset, of life table values for US
-women born in 1935 and 1995, also sourced from *Ponnapalli, K. (2005).*
+The package contains a built-in dataset of life table values for US
+women born in 1935 and 1995, `us_females`, also sourced from
+*Ponnapalli, K. (2005).*.
