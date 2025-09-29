@@ -14,7 +14,7 @@ coverage](https://codecov.io/gh/herts-phei/decompositionLE/graph/badge.svg)](htt
 
 The goal of **decompositionLE** is to provide an easy to use
 implementation of life expectancy decomposition formulas for age bands,
-derived from *Ponnapalli , K. (2005). A comparison of different methods
+derived from *Ponnapalli, K. (2005). A comparison of different methods
 for decomposition of changes in expectation of life at birth and
 differentials in life expectancy at birth. Demographic Research, 12,
 pp.141–172. doi: <https://doi.org/10.4054/demres.2005.12.7>.* In
@@ -32,3 +32,6 @@ pak::pak("herts-phei/decompositionLE")
 ```
 
 ## Example
+
+The package contains a built-in dataset, of life table values for US
+women born in 1935 and 1995, also sourced from *Ponnapalli, K. (2005).*

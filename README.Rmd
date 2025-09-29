@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/herts-phei/decompositionLE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/decompositionLE/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of **decompositionLE** is to provide an easy to use implementation of life expectancy decomposition formulas for age bands, derived from *Ponnapalli , K. (2005). A comparison of different methods for decomposition of changes in expectation of life at birth and differentials in life expectancy at birth. Demographic Research, 12, pp.141–172. doi: https://doi.org/10.4054/demres.2005.12.7.* In addition, there is a decomposition function for disease cause breakdown, as well as some useful helper plot functions.
+The goal of **decompositionLE** is to provide an easy to use implementation of life expectancy decomposition formulas for age bands, derived from *Ponnapalli, K. (2005). A comparison of different methods for decomposition of changes in expectation of life at birth and differentials in life expectancy at birth. Demographic Research, 12, pp.141–172. doi: https://doi.org/10.4054/demres.2005.12.7.* In addition, there is a decomposition function for disease cause breakdown, as well as some useful helper plot functions.
 
 ## Installation
 
@@ -33,3 +33,5 @@ pak::pak("herts-phei/decompositionLE")
 ```
 
 ## Example
+
+The package contains a built-in dataset, of life table values for US women born in 1935 and 1995, also sourced from *Ponnapalli, K. (2005).*
