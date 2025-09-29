@@ -14,12 +14,12 @@ coverage](https://codecov.io/gh/herts-phei/decompositionLE/graph/badge.svg)](htt
 
 The goal of **decompositionLE** is to provide an easy to use
 implementation of life expectancy decomposition formulas for age bands,
-derived from Ponnapalli , K. (2005). A comparison of different methods
+derived from *Ponnapalli , K. (2005). A comparison of different methods
 for decomposition of changes in expectation of life at birth and
 differentials in life expectancy at birth. Demographic Research, 12,
-pp.141–172. <doi:https://doi.org/10.4054/demres.2005.12.7>. In addition,
-there are decomposition formulas for disease cause breakdown, as well as
-some useful helper plot functions.
+pp.141–172. <doi:https://doi.org/10.4054/demres.2005.12.7>.* In
+addition, there is a decomposition function for disease cause breakdown,
+as well as some useful helper plot functions.
 
 ## Installation
 
@@ -32,34 +32,3 @@ pak::pak("herts-phei/decompositionLE")
 ```
 
 ## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(decompositionLE)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
