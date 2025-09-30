@@ -7,10 +7,10 @@
 #' \describe{
 #'   \item{Age}{ordered age groups as factor type}
 #'   \item{nm1x}{age specific death rate in the age group x; x + n in the initial time period ‘1935’}
-#'   \item{l1x}{number of persons alive at exact age x, in the initial time period ‘1935’}
+#'   \item{l1x}{number of persons alive at exact age x, in the initial time period ‘1935’ expressed as decimal form and as a proportion of the starting the age group}
 #'   \item{e1x}{expectation of life at exact age x, in the initial time period ‘1935’}
 #'   \item{nm2x}{age specific death rate in the age group x; x + n in the latter time period ‘1995’}
-#'   \item{l2x}{number of persons alive at exact age x, in the latter time period ‘1995’}
+#'   \item{l2x}{number of persons alive at exact age x, in the latter time period ‘1995’ expressed as decimal form and as a proportion of the starting the age group}
 #'   \item{e2x}{expectation of life at exact age x, in the latter time period ‘1995’}
 #'
 #'  where *n* = length of the age interval

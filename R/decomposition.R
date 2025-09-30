@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-#' decomposition(us_females, age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+#' decomposition(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead
@@ -31,7 +31,14 @@ decomposition <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, appe
   if (age_band_logical |> sum() > 1) stop("More than one open age band found. The last level must be the sole open age band suffixed with '+'")
   if (isFALSE(age_band_logical[length(age_band_logical)] && sum(age_band_logical) == 1)) stop("The last age band is not open-ended. Another age band is open-ended.")
 
-  df %>% mutate(
+  switch(method,
+    arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2)
+  )
+}
+
+
+.arriaga3 <- function(df, age_col, e1, e2, l1, l2) {
+  df |> mutate(
     ## direct ####
     direct_effect = case_when(
       !str_detect(.data[[age_col]], "\\+") ~ ((.data[[e2]] - .data[[e1]]) * (.data[[l2]] + .data[[l1]]) / 2) + ((.data[[l2]] + .data[[l1]]) * (((lead(.data[[l1]]) * lead(.data[[e1]])) / .data[[l1]]
