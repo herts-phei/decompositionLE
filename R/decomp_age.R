@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-#' decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+#' decomposition(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead
