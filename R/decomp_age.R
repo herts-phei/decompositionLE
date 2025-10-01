@@ -1,8 +1,8 @@
-#' Title decomposition
+#' Title decomp_age
 #'
-#' Function for performing life expectancy decomposition.
+#' Function for performing life expectancy decomposition for age bands
 #'
-#' @param df An outputted life table with
+#' @param df An outputted life table with columns for age bands, number of persons alive at each age band and expectation of life at each age band
 #' @param method Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3'.
 #' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.
 #' @param e1 Column name for expectation of life at age group x, in the 1st group of comparison.
@@ -11,16 +11,16 @@
 #' @param l2 Column name for The number of persons alive at age group x, in the 2nd group of comparison.
 #' @param append Whether to append the decomposition columns to the original data frame.
 #'
-#' @returns A data frame with life expectancy decomposition values
+#' @returns A data frame with attached life expectancy decomposition values
 #' @export
 #'
 #' @examples
-#' decomposition(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+#' decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead
 
-decomposition <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE) {
+decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE) {
   if (!is.factor(df[[age_col]])) stop("The age column is not of type factor")
 
   age_band_logical <- levels(df[[age_col]]) |>
