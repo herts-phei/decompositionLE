@@ -2,7 +2,7 @@
 #'
 #' Function for performing life expectancy decomposition for disease groups
 #'
-#' @param df An outputted life table with
+#' @param df An outputted life table with relevant columns of interest
 #' @param breakdown Whether disease breakdowns are raw mortality rates or a decimal proportion of total all-cause mortality rate. Accepts either 'proportion' or 'raw'.
 #' @param group_1 Unique matching stem prefix in columns for group 1 related disease cause breakdowns
 #' @param group_1_m Column name for group 1 all-cause mortality rate between ages x and x + n
@@ -13,10 +13,14 @@
 #' @export
 #'
 #' @examples
-#' decomp_disease(india_china_males_1995, breakdown = "proportion", group_1 = "India", group_1_m = "India_nmx", group_2 = "China", group_2_m = "China_nmx", nDx = "nDx")
+#' decomp_disease(india_china_males_1995,
+#'   breakdown = "proportion", group_1 = "India", group_1_m = "India_nmx",
+#'   group_2 = "China", group_2_m = "China_nmx", nDx = "nDx"
+#' )
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
-#' @importFrom dplyr mutate case_when lead select
+#' @importFrom dplyr mutate case_when lead select starts_with everything
+#' @importFrom tidyr pivot_wider pivot_longer
 
 decomp_disease <- function(df, breakdown, group_1, group_1_m, group_2, group_2_m, nDx) {
   if (!breakdown %in% c("proportion", "raw")) stop("Invalid breakdown argument selected")
@@ -35,7 +39,7 @@ decomp_disease <- function(df, breakdown, group_1, group_1_m, group_2, group_2_m
       breakdown == "proportion" ~ (.data[[nDx]] * ((.data[[group_2]] * .data[[group_2_m]]) - (.data[[group_1]] * .data[[group_1_m]])) / (.data[[group_2_m]] - .data[[group_1_m]]))
     )) |>
     pivot_wider(
-      names_from = "disease", values_from = c(.data[[group_2]], .data[[group_1]], `delta`),
+      names_from = "disease", values_from = c(group_2, group_1, "delta"),
       names_glue = "{.value}{disease}"
     ) |>
     select(df_colnames, everything()) |>

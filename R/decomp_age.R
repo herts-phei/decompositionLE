@@ -15,7 +15,10 @@
 #' @export
 #'
 #' @examples
-#' decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+#' decomp_age(us_females,
+#'   method = "arriaga3", age_col = "Age", e1 = "e1x",
+#'   e2 = "e2x", l1 = "l1x", l2 = "l2x"
+#' )
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead
@@ -32,10 +35,15 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
   if (isFALSE(age_band_logical[length(age_band_logical)] && sum(age_band_logical) == 1)) stop("The last age band is not open-ended. Another age band is open-ended.")
 
   switch(method,
-    arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2)
+    arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2),
+    test = .test(df, age_col, e1, e2, l1, l2)
   )
 }
 
+# decomp_age(us_females,
+#   method = "arriaga3", age_col = "Age", e1 = "e1x",
+#   e2 = "e2x", l1 = "l1x", l2 = "l2x"
+# )
 
 .arriaga3 <- function(df, age_col, e1, e2, l1, l2) {
   df |> mutate(
