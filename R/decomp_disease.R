@@ -18,7 +18,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead select
 
-decomp_disease <- function(df, group_1, group_1_m, group_2, group_2_m, nDx) {
+decomp_disease <- function(df, breakdown, group_1, group_1_m, group_2, group_2_m, nDx) {
   if (!breakdown %in% c("proportion", "raw")) stop("Invalid breakdown argument selected")
 
   df_colnames <- colnames(df)

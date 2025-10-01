@@ -4,20 +4,10 @@
 \alias{decomp_disease}
 \title{Title decomp_disease}
 \usage{
-decomp_disease(
-  df,
-  breakdown = "proportion",
-  group_1,
-  group_1_m,
-  group_2,
-  group_2_m,
-  nDx
-)
+decomp_disease(df, group_1, group_1_m, group_2, group_2_m, nDx)
 }
 \arguments{
 \item{df}{An outputted life table with}
-
-\item{breakdown}{Whether disease breakdowns are raw mortality rates or a decimal proportion of total all-cause mortality rate. Accepts either 'proportion' or 'raw'.}
 
 \item{group_1}{Unique matching stem prefix in columns for group 1 related disease cause breakdowns}
 
@@ -27,7 +17,9 @@ decomp_disease(
 
 \item{group_2_m}{Column name for group 2 all-cause mortality rate between ages x and x + n}
 
-\item{nDx}{Column name for contribution of all-cause mortality differences in groups 1 and 2 in age groups x to x + n. Essentially the total effect column computed from \code{decomp_LE()}.}
+\item{nDx}{Column name for contribution of all-cause mortality differences in groups 1 and 2 in age groups x to x + n. Computationally the same as the total effect column computed from \code{decomp_LE()}.}
+
+\item{breakdown}{Whether disease breakdowns are raw mortality rates or a decimal proportion of total all-cause mortality rate. Accepts either 'proportion' or 'raw'.}
 }
 \value{
 A data frame with life expectancy disease breakdown decomposition values
@@ -36,5 +28,5 @@ A data frame with life expectancy disease breakdown decomposition values
 Function for performing life expectancy decomposition for disease groups
 }
 \examples{
-decomp_disease(india_china_males_1995, group_1 = "India", group_1_m = "India_nmx", group_2 = "China", group_2_m = "China_nmx", nDx = "nDx")
+decomp_disease(india_china_males_1995, breakdown = "proportion", group_1 = "India", group_1_m = "India_nmx", group_2 = "China", group_2_m = "China_nmx", nDx = "nDx")
 }
