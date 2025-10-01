@@ -8,17 +8,17 @@
 #' @param group_1_m Column name for group 1 all-cause mortality rate between ages x and x + n
 #' @param group_2 Unique matching stem prefix in columns for group 2 related disease cause breakdowns
 #' @param group_2_m Column name for group 2 all-cause mortality rate between ages x and x + n
-#' @param nDx Column name for contribution of all-cause mortality differences in groups 1 and 2 in age groups x to x + n. Essentially the total effect column computed from `decomp_LE()`.
+#' @param nDx Column name for contribution of all-cause mortality differences in groups 1 and 2 in age groups x to x + n. Computationally the same as the total effect column computed from `decomp_LE()`.
 #' @returns A data frame with life expectancy disease breakdown decomposition values
 #' @export
 #'
 #' @examples
-#' decomp_disease(india_china_males_1995, group_1 = "India", group_1_m = "India_nmx", group_2 = "China", group_2_m = "China_nmx", nDx = "nDx")
+#' decomp_disease(india_china_males_1995, breakdown = "proportion", group_1 = "India", group_1_m = "India_nmx", group_2 = "China", group_2_m = "China_nmx", nDx = "nDx")
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
-#' @importFrom dplyr mutate case_when lead
+#' @importFrom dplyr mutate case_when lead select
 
-decomp_disease <- function(df, breakdown = "proportion", group_1, group_1_m, group_2, group_2_m, nDx) {
+decomp_disease <- function(df, group_1, group_1_m, group_2, group_2_m, nDx) {
   if (!breakdown %in% c("proportion", "raw")) stop("Invalid breakdown argument selected")
 
   df_colnames <- colnames(df)
