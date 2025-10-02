@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+library(decompositionLE)
 ```
 
 # decompositionLE
@@ -40,7 +42,8 @@ The package contains a built-in dataset of life table values for US women born i
 us_females
 ```
 
-The package also contains a built-in dataset of age and cause decomposition of difference in Life Expectancies at birth, for India and China, males, 1990, sourced from *Murray, C.J.L. and Lopez, A.D. (1996)*.
+The package also contains a built-in dataset of age and cause decomposition of difference in Life Expectancies at birth, for India and China, males, 1990, `india_china_males_1990`, sourced from *Murray, C.J.L. and Lopez, A.D. (1996)*.
 
 ```{r}
+india_china_males_1990
 ```

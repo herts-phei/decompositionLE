@@ -35,7 +35,7 @@ pak::pak("herts-phei/decompositionLE")
 
 The package contains a built-in dataset of life table values for US
 women born in 1935 and 1995, `us_females`, sourced from *Ponnapalli, K.
-(2005).*.
+(2005)*.
 
 ``` r
 us_females

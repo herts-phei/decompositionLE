@@ -42,4 +42,4 @@
 #' }
 #' @source Murray, C. J. and A. D. Lopez, 1996. *The Global Burden of Disease: A Comprehensive Assessment of Mortality and Disability from Diseases, Injuries, and Risk Factors in 1990 and Projected to 2020*. Boston, Harvard University, School of Public Health.
 
-"india_china_males_1995"
+"india_china_males_1990"

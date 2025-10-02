@@ -14,23 +14,25 @@
 #' @export
 #'
 #' @examples
-#' decomp_disease(india_china_males_1995,
-#'   breakdown = "proportion", diseases =  group_1 = "India",
-#'   group_1_m = "India_nmx", group_2 = "China", group_2_m = "China_nmx",
-#'   nDx = "nDx"
+#' decomp_disease(india_china_males_1990,
+#'   breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+#'   group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
+#'   group_2_m = "China_nmx", nDx = "nDx"
 #' )
+#'
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead select starts_with everything
 #' @importFrom tidyr pivot_wider pivot_longer
 
 decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2, group_2_m, nDx) {
-
   if (!breakdown %in% c("proportion", "raw")) stop("Invalid breakdown argument selected")
 
   df_colnames <- colnames(df)
 
-  catch <- countries |> map(~ paste0("^", .x, "(_)?", diseases, "$", recycle0 = T)) |> unlist()
+  catch <- countries |>
+    map(~ paste0("^", .x, "(_)?", diseases, "$", recycle0 = T)) |>
+    unlist()
 
   all_combinations_in_colnames_check <- all(map_lgl(catch, ~ any(str_detect(df_colnames, .x))))
 
