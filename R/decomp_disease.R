@@ -24,7 +24,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead select starts_with everything
 #' @importFrom tidyr pivot_wider pivot_longer ends_with
-#' @importFrom purr map map_lgl
+#' @importFrom purrr map map_lgl
 
 decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2, group_2_m, nDx) {
   if (!breakdown %in% c("proportion", "raw")) stop("Invalid breakdown argument selected")
