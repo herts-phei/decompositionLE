@@ -53,6 +53,7 @@ decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2,
       names_glue = "{.value}{disease}"
     ) |>
     select(df_colnames, everything()) |>
+    suppressWarnings() |>
     identity()
 }
 
