@@ -57,6 +57,7 @@ decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2,
     ) |>
     select(df_colnames, everything()) |>
     suppressWarnings() |>
+    as.data.frame() |> # strip S3 class
     identity()
 }
 

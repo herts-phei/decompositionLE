@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 )
 
 library(decompositionLE)
+library(tidyverse)
 ```
 
 # decompositionLE
@@ -42,8 +43,25 @@ The package contains a built-in dataset of life table values for US women born i
 us_females
 ```
 
+The dataset demonstrates usage of `decomp_age()`.
+
+```{r}
+decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+```
+
 The package also contains a built-in dataset of age and cause decomposition of difference in Life Expectancies at birth, for India and China, males, 1990, `india_china_males_1990`, sourced from *Murray, C.J.L. and Lopez, A.D. (1996)*.
 
 ```{r}
 india_china_males_1990
+```
+
+The dataset demonstrates usage of `decomp_disease()`.
+
+```{r cols.print=9999, rows.print=9999}
+decomp_disease(india_china_males_1990,
+  breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+  group_1 = "India", group_1_m = "India_nmx", 
+  group_2 = "China", group_2_m = "China_nmx", 
+  nDx = "nDx"
+)
 ```
