@@ -14,12 +14,10 @@ coverage](https://codecov.io/gh/herts-phei/decompositionLE/graph/badge.svg)](htt
 
 The goal of **decompositionLE** is to provide an easy to use
 implementation of life expectancy decomposition formulas for age bands,
-derived from *Ponnapalli, K. (2005). A comparison of different methods
-for decomposition of changes in expectation of life at birth and
-differentials in life expectancy at birth. Demographic Research, 12,
-pp.141–172. doi: <https://doi.org/10.4054/demres.2005.12.7>.* In
-addition, there is a decomposition function for disease cause breakdown,
-as well as some useful helper plot functions.
+derived from *Ponnapalli, K. (2005)* In addition, there is a
+decomposition function for disease cause breakdown sourced from
+*Preston, S.H., Heuveline, P. and Guillot, M. (2001)*, as well as some
+useful helper plot functions.
 
 ## Installation
 
@@ -158,3 +156,14 @@ decomp_disease(india_china_males_1990,
 #> 6          0.051  0.3 0.4714174 -0.1335783   -0.037839130
 #> 7          0.039 -0.3 0.5886932 -0.8242662   -0.064427027
 ```
+
+## References
+
+*Ponnapalli, K. (2005). A comparison of different methods for
+decomposition of changes in expectation of life at birth and
+differentials in life expectancy at birth. Demographic Research, 12,
+pp.141–172. doi: <https://doi.org/10.4054/demres.2005.12.7>.*
+
+*Preston, S.H., Heuveline, P. and Guillot, M. (2001). Demography :
+measuring and modeling population processes. Oxford ; Malden, Mass.:
+Blackwell Publishers.*
