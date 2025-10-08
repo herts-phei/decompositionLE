@@ -25,8 +25,7 @@ You can install the development version of decompositionLE from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("herts-phei/decompositionLE")
+devtools::install_github("herts-phei/decompositionLE")
 ```
 
 ## Example
