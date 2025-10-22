@@ -3,7 +3,7 @@
 #' Function for performing life expectancy decomposition for age bands
 #'
 #' @param df An outputted life table with columns for age bands, number of persons alive at each age band and expectation of life at each age band
-#' @param method Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3'.
+#' @param method Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3', 'chandrasekaran1', 'chandrasekaran2'.
 #' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.
 #' @param e1 Column name for expectation of life at age group x, in the 1st group of comparison.
 #' @param e2 Column name for expectation of life at age group x, in the 2nd group of comparison.
@@ -26,7 +26,7 @@
 decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE) {
   if (!is.factor(df[[age_col]])) stop("The age column is not of type factor")
 
-  methods <- c("arriaga3")
+  methods <- c("arriaga3", "chandrasekaran1", "chandrasekaran2")
 
   if (!method %in% methods) stop("Invalid method")
 
@@ -40,17 +40,14 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
 
   result <- suppressWarnings(
     switch(method,
-      arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2)
+      arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2),
+      chandrasekaran1 = .chandrasekaran1(df, age_col, e1, e2, l1, l2),
+      chandrasekaran2 = .chandrasekaran2(df, age_col, e1, e2, l1, l2)
     )
   )
 
   result
 }
-
-# decomp_age(us_females,
-#   method = "arriaga3", age_col = "Age", e1 = "e1x",
-#   e2 = "e2x", l1 = "l1x", l2 = "l2x"
-# )
 
 .arriaga3 <- function(df, age_col, e1, e2, l1, l2) {
   df |> mutate(
@@ -92,4 +89,38 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
     # ,
     # across(contains("effect"), ~ round(., 2))
   )
+}
+
+.chandrasekaran1 <- function(df, age_col, e1, e2, l1, l2) {
+  df |> mutate(
+    # Main effect
+    main_effect = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ (.data[[l1]] / .data[[l2]]) * (.data[[l2]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l2]]) * (lead(.data[[e2]]) - lead(.data[[e1]]))),
+      TRUE ~ (.data[[l1]] / .data[[l2]]) * (.data[[l2]] * (.data[[e2]] - .data[[e1]])
+      )
+    ),
+
+    # Operative effect
+    operative_effect = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ (.data[[l2]] / .data[[l1]]) * (.data[[l1]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l1]]) * (lead(.data[[e2]]) - lead(.data[[e1]]))),
+      TRUE ~ (.data[[l2]] / .data[[l1]]) * (.data[[l1]] * (.data[[e2]] - .data[[e1]]))
+    ),
+    # Effect-interaction deferred
+    effect_interaction_deferred = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ .data[[l2]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l2]]) * (lead(.data[[e2]]) - lead(.data[[e1]])),
+      TRUE ~ .data[[l2]] * (.data[[e2]] - .data[[e1]])
+    ),
+
+    # Effect-interaction forwarded
+    effect_interaction_forwarded = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ .data[[l1]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l1]]) * (lead(.data[[e2]]) - lead(.data[[e1]])),
+      TRUE ~ .data[[l1]] * (.data[[e2]] - .data[[e1]])
+    )
+  )
+}
+
+.chandrasekaran2 <- function(df, age_col, e1, e2, l1, l2) {
+  df |>
+    .chandrasekaran1(age_col, e1, e2, l1, l2) |>
+    mutate(chandrasekaran2 = (effect_interaction_deferred + effect_interaction_forwarded) / 2)
 }
