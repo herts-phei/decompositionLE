@@ -7,8 +7,8 @@
 #' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.
 #' @param e1 Column name for expectation of life at age group x, in the 1st group of comparison.
 #' @param e2 Column name for expectation of life at age group x, in the 2nd group of comparison.
-#' @param l1 Column name for The number of persons alive at age group x, in the 1st group of comparison.
-#' @param l2 Column name for The number of persons alive at age group x, in the 2nd group of comparison.
+#' @param l1 Column name for the proportion of persons alive at age group x, in the 1st group of comparison.
+#' @param l2 Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.
 #' @param append Whether to append the decomposition columns to the original data frame.
 #'
 #' @returns A data frame with attached life expectancy decomposition values

@@ -60,5 +60,3 @@ decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2,
     as.data.frame() |> # strip S3 class
     identity()
 }
-
-# 5.6 * (((0.677 * 0.0084) - (0.882 * 0.0267)) / (0.0084 - 0.0267))
