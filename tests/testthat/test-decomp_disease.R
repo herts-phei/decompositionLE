@@ -30,7 +30,7 @@ test_that("calculates delta correctly for raw breakdown", {
     group_1 = "India", group_1_m = "India_nmx",
     group_2 = "China", group_2_m = "China_nmx", nDx = "nDx"
   )
-  expected <- with(india_china_males_1990, nDx * (China_CD - India_CD) / (China_nmx - India_nmx))
+  expected <- with(india_china_males_1990, nDx * ((China_CD * China_nmx) - (India_CD * India_nmx)) / (China_nmx - India_nmx))
   expect_equal(result$delta_CD, expected)
 })
 
