@@ -1,5 +1,7 @@
 library(tidyverse)
 
+## input validation ------------------------------------------------------------
+
 test_that("checks input is in correct format", {
   df_test_fct <- us_females
   df_test_fct$Age <- as.character(us_females$Age)

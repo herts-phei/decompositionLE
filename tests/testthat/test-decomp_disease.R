@@ -1,7 +1,9 @@
+## input validation ------------------------------------------------------------
+
 test_that("decomp_disease errors on invalid breakdown", {
   expect_error(
     decomp_disease(india_china_males_1990,
-      breakdown = "qwerty", diseases = c("CD", "NCD", "Injuries"),
+      breakdown = "qwerty", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
       group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
       group_2_m = "China_nmx", nDx = "nDx"
     ),
@@ -9,22 +11,11 @@ test_that("decomp_disease errors on invalid breakdown", {
   )
 })
 
-test_that("decomp_disease valid output", {
-  expect_s3_class(
-    decomp_disease(india_china_males_1990,
-      breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
-      group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
-      group_2_m = "China_nmx", nDx = "nDx"
-    ),
-    "data.frame"
-  )
-})
-
 test_that("checks input is in correct format", {
   df_test_fct <- india_china_males_1990
   df_test_fct$Age <- as.character(india_china_males_1990$Age)
   expect_error(decomp_disease(df_test_fct,
-    breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+    breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
     group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
     group_2_m = "China_nmx", nDx = "nDx"
   ))
@@ -53,11 +44,35 @@ test_that("checks that example data matches the paper", {
   )
 
   df_test <- decomp_disease(india_china_males_1990,
-    breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+    breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
     group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
     group_2_m = "China_nmx", nDx = "nDx"
   ) |>
     select(Age, delta_CD, delta_NCD, delta_Injuries)
 
   expect_equal(df_test, preston_box4.3_results, tolerance = 0.2)
+})
+
+## calculations validation -----------------------------------------------------
+
+test_that("calculates delta correctly for raw breakdown", {
+  result <- decomp_disease(india_china_males_1990,
+    breakdown = "proportion", age_col = "Age", diseases = c("CD"),
+    group_1 = "India", group_1_m = "India_nmx",
+    group_2 = "China", group_2_m = "China_nmx", nDx = "nDx"
+  )
+  expected <- with(india_china_males_1990, nDx * ((China_CD * China_nmx) - (India_CD * India_nmx)) / (China_nmx - India_nmx))
+  expect_equal(result$delta_CD, expected)
+})
+
+## output validation -----------------------------------------------------------
+
+test_that("decomp_disease valid output", {
+  result <- decomp_disease(india_china_males_1990,
+    breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
+    group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
+    group_2_m = "China_nmx", nDx = "nDx"
+  )
+  expect_s3_class(result, "data.frame")
+  expect_true(all(c("delta_CD", "delta_NCD", "delta_Injuries") %in% colnames(result)))
 })
