@@ -8,6 +8,7 @@ decomp_disease(
   df,
   breakdown,
   diseases,
+  age_col,
   group_1,
   group_1_m,
   group_2,
@@ -21,6 +22,8 @@ decomp_disease(
 \item{breakdown}{Whether disease breakdowns are raw mortality rates or a decimal proportion of total all-cause mortality rate. Accepts either 'proportion' or 'raw'.}
 
 \item{diseases}{Character vector of diseases which are suffixed to \code{group_1} and \code{group_2}, and found in both groups. There should be no other characters after these diseases for the function to capture the group-disease combinations.}
+
+\item{age_col}{Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.}
 
 \item{group_1}{Unique matching stem prefix in columns for group 1 related disease cause breakdowns}
 
@@ -40,7 +43,7 @@ Function for performing life expectancy decomposition for disease groups
 }
 \examples{
 decomp_disease(india_china_males_1990,
-  breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+  breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
   group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
   group_2_m = "China_nmx", nDx = "nDx"
 )

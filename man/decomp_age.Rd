@@ -17,9 +17,9 @@ decomp_age(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE)
 
 \item{e2}{Column name for expectation of life at age group x, in the 2nd group of comparison.}
 
-\item{l1}{Column name for The number of persons alive at age group x, in the 1st group of comparison.}
+\item{l1}{Column name for the proportion of persons alive at age group x, in the 1st group of comparison.}
 
-\item{l2}{Column name for The number of persons alive at age group x, in the 2nd group of comparison.}
+\item{l2}{Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.}
 
 \item{append}{Whether to append the decomposition columns to the original data frame.}
 }

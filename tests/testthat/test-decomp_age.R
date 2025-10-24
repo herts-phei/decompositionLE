@@ -1,5 +1,3 @@
-library(tidyverse)
-
 ## input validation ------------------------------------------------------------
 
 test_that("checks input is in correct format", {
@@ -38,13 +36,13 @@ test_that("checks that example data matches the paper", {
     method = "arriaga3", age_col = "Age",
     e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x"
   ) |>
-    group_by(Age) |>
-    summarise(
-      across(everything(), ~ round(.x, digits = 2))
+    dplyr::group_by(Age) |>
+    dplyr::summarise(
+      dplyr::across(dplyr::everything(), ~ round(.x, digits = 2))
     ) |>
-    ungroup() %>%
-    select(Age, direct_effect, indirect_effect, exclusive_effect, interaction_effect, total_effect) |>
-    mutate(Age = as.character(Age))
+    dplyr::ungroup() %>%
+    dplyr::select(Age, direct_effect, indirect_effect, exclusive_effect, interaction_effect, total_effect) |>
+    dplyr::mutate(Age = as.character(Age))
 
   expect_equal(df_test, ponnapalli_arriaga3_results, tolerance = 0.1)
 })
