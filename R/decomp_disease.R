@@ -58,10 +58,10 @@ decomp_disease <- function(df, breakdown, diseases, age_col, group_1, group_1_m,
   if (length(non_numeric)) {
     stop(sprintf("The following columns are not numeric: %s", paste(non_numeric, collapse = ", ")), call. = FALSE)
   }
-  all_of()
+
   intermediate <- df |>
     pivot_longer(
-      cols = c(all_of(starts_with(group_1), starts_with(group_2)) & !c(group_1_m, group_2_m) & ends_with(diseases)),
+      cols = all_of(c(starts_with(group_1), starts_with(group_2))) & !all_of(c(group_1_m, group_2_m)) & all_of(ends_with(diseases)),
       names_to = c(".value", "disease"),
       names_pattern = paste0("^(", group_1, "|", group_2, ")(.*)$")
     )
