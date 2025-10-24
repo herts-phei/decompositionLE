@@ -26,7 +26,17 @@
 #' @importFrom tidyr pivot_wider pivot_longer ends_with
 #' @importFrom purrr map map_lgl
 
-decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2, group_2_m, nDx) {
+decomp_disease <- function(df, breakdown, diseases, age_col, group_1, group_1_m, group_2, group_2_m, nDx) {
+  if (!is.factor(df[[age_col]])) stop("The age column is not of type factor")
+
+  age_band_logical <- levels(df[[age_col]]) |>
+    as.vector() |>
+    str_detect("\\+")
+
+  if (age_band_logical |> sum() == 0) stop("No open-ended age band found. The last level must be the sole open-ended age band suffixed with '+'")
+  if (age_band_logical |> sum() > 1) stop("More than one open age band found. The last level must be the sole open age band suffixed with '+'")
+  if (isFALSE(age_band_logical[length(age_band_logical)] && sum(age_band_logical) == 1)) stop("The last age band is not open-ended. Another age band is open-ended.")
+
   if (!breakdown %in% c("proportion", "raw")) stop("Invalid breakdown argument selected")
 
   df_colnames <- colnames(df)
@@ -40,6 +50,13 @@ decomp_disease <- function(df, breakdown, diseases, group_1, group_1_m, group_2,
   all_combinations_in_colnames_check <- all(map_lgl(catch, ~ any(str_detect(df_colnames, .x))))
 
   if (isFALSE(all_combinations_in_colnames_check)) stop("One or more diseases not found in groups")
+
+  required_numeric_cols <- c(catch, group_1_m, group_2_m, nDx)
+  non_numeric <- required_numeric_cols[!sapply(df[required_numeric_cols], is.numeric)]
+
+  if (length(non_numeric)) {
+    stop(sprintf("The following columns are not numeric: %s", paste(non_numeric, collapse = ", ")), call. = FALSE)
+  }
 
   df |>
     pivot_longer(

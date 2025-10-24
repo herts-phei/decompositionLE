@@ -28,17 +28,12 @@ test_that("checks input is in correct format", {
     group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
     group_2_m = "China_nmx", nDx = "nDx"
   ))
-  df_test_prop <- india_china_males_1990
-  df_test_prop$l1x[1] <- 2
-  expect_error(decomp_age(df_test_prop,
-    method = "arriaga3", age_col = "Age",
-    e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x"
-  ))
   df_test_num <- india_china_males_1990
-  df_test_num$l2x <- as.character(df_test_num$l2x)
-  expect_error(decomp_age(df_test_num,
-    method = "arriaga3", age_col = "Age",
-    e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x"
+  df_test_num$India_nmx <- as.character(df_test_num$India_nmx)
+  expect_error(decomp_disease(df_test_num,
+    breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+    group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
+    group_2_m = "China_nmx", nDx = "nDx"
   ))
   # TODO Add check that row props equal 1
 })
