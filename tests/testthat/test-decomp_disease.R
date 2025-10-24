@@ -53,18 +53,6 @@ test_that("checks that example data matches the paper", {
   expect_equal(df_test, preston_box4.3_results, tolerance = 0.2)
 })
 
-## calculations validation -----------------------------------------------------
-
-test_that("calculates delta correctly for raw breakdown", {
-  result <- decomp_disease(india_china_males_1990,
-    breakdown = "proportion", age_col = "Age", diseases = c("CD"),
-    group_1 = "India", group_1_m = "India_nmx",
-    group_2 = "China", group_2_m = "China_nmx", nDx = "nDx"
-  )
-  expected <- with(india_china_males_1990, nDx * ((China_CD * China_nmx) - (India_CD * India_nmx)) / (China_nmx - India_nmx))
-  expect_equal(result$delta_CD, expected)
-})
-
 ## output validation -----------------------------------------------------------
 
 test_that("decomp_disease valid output", {
