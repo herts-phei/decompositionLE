@@ -12,7 +12,7 @@ test_that("decomp_disease errors on invalid breakdown", {
 test_that("decomp_disease valid output", {
   expect_s3_class(
     decomp_disease(india_china_males_1990,
-      breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+      breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
       group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
       group_2_m = "China_nmx", nDx = "nDx"
     ),
@@ -31,10 +31,19 @@ test_that("checks input is in correct format", {
   df_test_num <- india_china_males_1990
   df_test_num$India_nmx <- as.character(df_test_num$India_nmx)
   expect_error(decomp_disease(df_test_num,
-    breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+    breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
     group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
     group_2_m = "China_nmx", nDx = "nDx"
   ))
+  df_test_prop <- india_china_males_1990
+  df_test_prop$India_CD[1] <- 99999
+  expect_error(decomp_disease(df_test_prop,
+    breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
+    group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
+    group_2_m = "China_nmx", nDx = "nDx"
+  ), regexp = "The following group-age combinations do not sum to 1 within tolerance of 0.01")
+
+
   # TODO Add check that row props equal 1
 })
 
