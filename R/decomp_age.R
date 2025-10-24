@@ -7,8 +7,8 @@
 #' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.
 #' @param e1 Column name for expectation of life at age group x, in the 1st group of comparison.
 #' @param e2 Column name for expectation of life at age group x, in the 2nd group of comparison.
-#' @param l1 Column name for The number of persons alive at age group x, in the 1st group of comparison.
-#' @param l2 Column name for The number of persons alive at age group x, in the 2nd group of comparison.
+#' @param l1 Column name for the proportion of persons alive at age group x, in the 1st group of comparison.
+#' @param l2 Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.
 #' @param append Whether to append the decomposition columns to the original data frame.
 #'
 #' @returns A data frame with attached life expectancy decomposition values
@@ -30,6 +30,8 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
 
   if (!method %in% methods) stop("Invalid method")
 
+  if (any(c(df[[l1]], df[[l2]]) > 1)) stop("Implausible values found in 'l' column. No values should exceed 1. ")
+
   age_band_logical <- levels(df[[age_col]]) |>
     as.vector() |>
     str_detect("\\+")
@@ -37,6 +39,14 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
   if (age_band_logical |> sum() == 0) stop("No open-ended age band found. The last level must be the sole open-ended age band suffixed with '+'")
   if (age_band_logical |> sum() > 1) stop("More than one open age band found. The last level must be the sole open age band suffixed with '+'")
   if (isFALSE(age_band_logical[length(age_band_logical)] && sum(age_band_logical) == 1)) stop("The last age band is not open-ended. Another age band is open-ended.")
+
+  required_numeric_cols <- c(e1, e2, l1, l2)
+  non_numeric <- required_numeric_cols[!sapply(df[required_numeric_cols], is.numeric)]
+
+  if (length(non_numeric)) {
+    stop(sprintf("The following columns are not numeric: %s", paste(non_numeric, collapse = ", ")), call. = FALSE)
+  }
+
 
   result <- suppressWarnings(
     switch(method,

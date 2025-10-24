@@ -105,9 +105,8 @@ decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e
 ```
 
 The package also contains a built-in dataset of age and cause
-decomposition of difference in Life Expectancies at birth, for India and
-China, males, 1990, `india_china_males_1990`, sourced from *Murray,
-C.J.L. and Lopez, A.D. (1996)*.
+decomposition of difference in Life Expectancies at birth, for males in India and
+China in 1990 (`india_china_males_1990`) which breaks down deaths from communicable (CD), non-communicable (NCD), and injuries causes. Data is sourced from *Preston, S.H., Heuveline, P. and Guillot, M. (2001)*.
 
 ``` r
 india_china_males_1990
