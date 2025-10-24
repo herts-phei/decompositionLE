@@ -32,7 +32,7 @@ test_that("checks that example data matches the paper", {
   ) |>
     tibble::as_tibble()
 
-  df_test <- decomp_age(us_females |> filter(Age %in% c("0", "5", "15", "25", "45", "65", "85+")),
+  df_test <- decomp_age(us_females |> dplyr::filter(Age %in% c("0", "5", "15", "25", "45", "65", "85+")),
     method = "arriaga3", age_col = "Age",
     e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x"
   ) |>
