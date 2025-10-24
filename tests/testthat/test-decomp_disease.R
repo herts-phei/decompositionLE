@@ -23,7 +23,7 @@ test_that("decomp_disease valid output", {
 test_that("checks input is in correct format", {
   df_test_fct <- india_china_males_1990
   df_test_fct$Age <- as.character(india_china_males_1990$Age)
-  expect_error(decomp_disease(india_china_males_1990,
+  expect_error(decomp_disease(df_test_fct,
     breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
     group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
     group_2_m = "China_nmx", nDx = "nDx"
