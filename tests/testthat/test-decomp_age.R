@@ -1,6 +1,8 @@
+library(tidyverse)
+
 test_that("checks input is in correct format", {
   df_test_fct <- us_females
-  df_test_fct$Age <- as.character(df_test$Age)
+  df_test_fct$Age <- as.character(us_females$Age)
   expect_error(decomp_age(df_test_fct,
     method = "arriaga3", age_col = "Age",
     e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x"
@@ -28,7 +30,7 @@ test_that("checks that example data matches the paper", {
     interaction_effect = c(0.00, -0.00, -0.01, -0.02, -0.06, -0.07, NA),
     total_effect = c(3.85, 0.73, 1.01, 2.55, 3.31, 3.66, 0.57)
   ) |>
-    as_tibble()
+    tibble::as_tibble()
 
   df_test <- decomp_age(us_females |> filter(Age %in% c("0", "5", "15", "25", "45", "65", "85+")),
     method = "arriaga3", age_col = "Age",
