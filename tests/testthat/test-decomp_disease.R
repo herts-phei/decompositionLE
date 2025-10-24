@@ -42,9 +42,6 @@ test_that("checks input is in correct format", {
     group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
     group_2_m = "China_nmx", nDx = "nDx"
   ), regexp = "The following group-age combinations do not sum to 1 within tolerance of 0.01")
-
-
-  # TODO Add check that row props equal 1
 })
 
 test_that("checks that example data matches the paper", {
