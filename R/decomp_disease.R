@@ -23,7 +23,7 @@
 #'
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
-#' @importFrom dplyr mutate case_when lead select starts_with everything
+#' @importFrom dplyr mutate case_when lead select starts_with everything all_of
 #' @importFrom tidyr pivot_wider pivot_longer ends_with
 #' @importFrom purrr map map_lgl
 
@@ -58,17 +58,17 @@ decomp_disease <- function(df, breakdown, diseases, age_col, group_1, group_1_m,
   if (length(non_numeric)) {
     stop(sprintf("The following columns are not numeric: %s", paste(non_numeric, collapse = ", ")), call. = FALSE)
   }
-
+  all_of()
   intermediate <- df |>
     pivot_longer(
-      cols = c(starts_with(group_1), starts_with(group_2)) & !c(group_1_m, group_2_m) & ends_with(diseases),
+      cols = c(all_of(starts_with(group_1), starts_with(group_2)) & !c(group_1_m, group_2_m) & ends_with(diseases)),
       names_to = c(".value", "disease"),
       names_pattern = paste0("^(", group_1, "|", group_2, ")(.*)$")
     )
 
   if (breakdown == "proportion") {
     proportions_transform <- intermediate |>
-      pivot_wider(id_cols = "disease", names_from = age_col, values_from = c(group_1, group_2))
+      pivot_wider(id_cols = "disease", names_from = all_of(age_col), values_from = all_of(c(group_1, group_2)))
 
     colsums <- colSums(proportions_transform[, !(names(proportions_transform) %in% "disease")])
     not_close <- names(colsums)[!sapply(colsums, function(x) isTRUE(all.equal(x, 1, tolerance = 0.01)))]
