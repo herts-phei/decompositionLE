@@ -2,6 +2,7 @@
 
 export(decomp_age)
 export(decomp_disease)
+importFrom(dplyr,all_of)
 importFrom(dplyr,case_when)
 importFrom(dplyr,everything)
 importFrom(dplyr,lead)

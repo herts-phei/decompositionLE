@@ -3,12 +3,12 @@
 #' Function for performing life expectancy decomposition for age bands
 #'
 #' @param df An outputted life table with columns for age bands, number of persons alive at each age band and expectation of life at each age band
-#' @param method Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3'.
+#' @param method Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3', 'chandrasekaran1', 'chandrasekaran2'.
 #' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.
 #' @param e1 Column name for expectation of life at age group x, in the 1st group of comparison.
 #' @param e2 Column name for expectation of life at age group x, in the 2nd group of comparison.
-#' @param l1 Column name for The number of persons alive at age group x, in the 1st group of comparison.
-#' @param l2 Column name for The number of persons alive at age group x, in the 2nd group of comparison.
+#' @param l1 Column name for the proportion of persons alive at age group x, in the 1st group of comparison.
+#' @param l2 Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.
 #' @param append Whether to append the decomposition columns to the original data frame.
 #'
 #' @returns A data frame with attached life expectancy decomposition values
@@ -26,9 +26,11 @@
 decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE) {
   if (!is.factor(df[[age_col]])) stop("The age column is not of type factor")
 
-  methods <- c("arriaga3", "pollards3")
+  methods <- c("arriaga3", "chandrasekaran1", "chandrasekaran2")
 
   if (!method %in% methods) stop("Invalid method")
+
+  if (any(c(df[[l1]], df[[l2]]) > 1)) stop("Implausible values found in 'l' column. No values should exceed 1. ")
 
   age_band_logical <- levels(df[[age_col]]) |>
     as.vector() |>
@@ -38,10 +40,20 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
   if (age_band_logical |> sum() > 1) stop("More than one open age band found. The last level must be the sole open age band suffixed with '+'")
   if (isFALSE(age_band_logical[length(age_band_logical)] && sum(age_band_logical) == 1)) stop("The last age band is not open-ended. Another age band is open-ended.")
 
+  required_numeric_cols <- c(e1, e2, l1, l2)
+  non_numeric <- required_numeric_cols[!sapply(df[required_numeric_cols], is.numeric)]
+
+  if (length(non_numeric)) {
+    stop(sprintf("The following columns are not numeric: %s", paste(non_numeric, collapse = ", ")), call. = FALSE)
+  }
+
+
   result <- suppressWarnings(
     switch(method,
       arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2),
-      pollards3 = .pollards3(df, age_col, nm1x = "nm1x", l1x = "l1x", e1x = "e1x", nm2x = "nm2x", l2x = "l2x", e2x = "e2x")
+      pollards3 = .pollards3(df, age_col, nm1x = "nm1x", l1x = "l1x", e1x = "e1x", nm2x = "nm2x", l2x = "l2x", e2x = "e2x"),
+      chandrasekaran1 = .chandrasekaran1(df, age_col, e1, e2, l1, l2),
+      chandrasekaran2 = .chandrasekaran2(df, age_col, e1, e2, l1, l2)
     )
   )
 
@@ -153,3 +165,37 @@ test <- decomp_age(
   method = "pollards3",
   age_col = "Age"
 )
+
+.chandrasekaran1 <- function(df, age_col, e1, e2, l1, l2) {
+  df |> mutate(
+    # Main effect
+    main_effect = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ (.data[[l1]] / .data[[l2]]) * (.data[[l2]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l2]]) * (lead(.data[[e2]]) - lead(.data[[e1]]))),
+      TRUE ~ (.data[[l1]] / .data[[l2]]) * (.data[[l2]] * (.data[[e2]] - .data[[e1]])
+      )
+    ),
+
+    # Operative effect
+    operative_effect = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ (.data[[l2]] / .data[[l1]]) * (.data[[l1]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l1]]) * (lead(.data[[e2]]) - lead(.data[[e1]]))),
+      TRUE ~ (.data[[l2]] / .data[[l1]]) * (.data[[l1]] * (.data[[e2]] - .data[[e1]]))
+    ),
+    # Effect-interaction deferred
+    effect_interaction_deferred = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ .data[[l2]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l2]]) * (lead(.data[[e2]]) - lead(.data[[e1]])),
+      TRUE ~ .data[[l2]] * (.data[[e2]] - .data[[e1]])
+    ),
+
+    # Effect-interaction forwarded
+    effect_interaction_forwarded = case_when(
+      !str_detect(.data[[age_col]], "\\+") ~ .data[[l1]] * (.data[[e2]] - .data[[e1]]) - lead(.data[[l1]]) * (lead(.data[[e2]]) - lead(.data[[e1]])),
+      TRUE ~ .data[[l1]] * (.data[[e2]] - .data[[e1]])
+    )
+  )
+}
+
+.chandrasekaran2 <- function(df, age_col, e1, e2, l1, l2) {
+  df |>
+    .chandrasekaran1(age_col, e1, e2, l1, l2) |>
+    mutate(chandrasekaran2 = (effect_interaction_deferred + effect_interaction_forwarded) / 2)
+}

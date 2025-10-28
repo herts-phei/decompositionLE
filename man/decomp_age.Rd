@@ -9,7 +9,7 @@ decomp_age(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE)
 \arguments{
 \item{df}{An outputted life table with columns for age bands, number of persons alive at each age band and expectation of life at each age band}
 
-\item{method}{Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3'.}
+\item{method}{Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3', 'chandrasekaran1', 'chandrasekaran2'.}
 
 \item{age_col}{Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.}
 
@@ -17,9 +17,9 @@ decomp_age(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE)
 
 \item{e2}{Column name for expectation of life at age group x, in the 2nd group of comparison.}
 
-\item{l1}{Column name for The number of persons alive at age group x, in the 1st group of comparison.}
+\item{l1}{Column name for the proportion of persons alive at age group x, in the 1st group of comparison.}
 
-\item{l2}{Column name for The number of persons alive at age group x, in the 2nd group of comparison.}
+\item{l2}{Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.}
 
 \item{append}{Whether to append the decomposition columns to the original data frame.}
 }
