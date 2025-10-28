@@ -26,7 +26,7 @@
 decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE) {
   if (!is.factor(df[[age_col]])) stop("The age column is not of type factor")
 
-  methods <- c("arriaga3", "chandrasekaran1", "chandrasekaran2")
+  methods <- c("arriaga3", "chandrasekaran1", "chandrasekaran2", "pollards3")
 
   if (!method %in% methods) stop("Invalid method")
 
@@ -60,10 +60,10 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
   result
 }
 
-decomp_age(us_females,
-  method = "arriaga3", age_col = "Age", e1 = "e1x",
-  e2 = "e2x", l1 = "l1x", l2 = "l2x"
-)
+# decomp_age(us_females,
+#   method = "arriaga3", age_col = "Age", e1 = "e1x",
+#   e2 = "e2x", l1 = "l1x", l2 = "l2x"
+# )
 
 .arriaga3 <- function(df, age_col, e1, e2, l1, l2) {
   df |> mutate(
@@ -160,11 +160,11 @@ library(dplyr)
   return(output)
 }
 
-test <- decomp_age(
-  us_females,
-  method = "pollards3",
-  age_col = "Age"
-)
+# test <- decomp_age(
+#   us_females,
+#   method = "pollards3",
+#   age_col = "Age"
+# )
 
 .chandrasekaran1 <- function(df, age_col, e1, e2, l1, l2) {
   df |> mutate(
