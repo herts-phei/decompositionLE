@@ -24,3 +24,5 @@ Suggests:
     tibble,
     forcats
 Config/testthat/edition: 3
+URL: https://github.com/herts-phei/decompositionLE
+BugReports: https://github.com/herts-phei/decompositionLE/issues
