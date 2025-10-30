@@ -26,7 +26,7 @@
 decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE) {
   if (!is.factor(df[[age_col]])) stop("The age column is not of type factor")
 
-  methods <- c("arriaga3", "chandrasekaran1", "chandrasekaran2", "pollards3")
+  methods <- c("arriaga3", "chandrasekaran1", "chandrasekaran2")
 
   if (!method %in% methods) stop("Invalid method")
 
@@ -51,7 +51,7 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
   result <- suppressWarnings(
     switch(method,
       arriaga3 = .arriaga3(df, age_col, e1, e2, l1, l2),
-      pollards3 = .pollards3(df, age_col, nm1x = "nm1x", l1x = "l1x", e1x = "e1x", nm2x = "nm2x", l2x = "l2x", e2x = "e2x"),
+      # pollards3 = .pollards3(df, age_col, nm1x = "nm1x", l1x = "l1x", e1x = "e1x", nm2x = "nm2x", l2x = "l2x", e2x = "e2x"),
       chandrasekaran1 = .chandrasekaran1(df, age_col, e1, e2, l1, l2),
       chandrasekaran2 = .chandrasekaran2(df, age_col, e1, e2, l1, l2)
     )
@@ -59,11 +59,6 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
 
   result
 }
-
-# decomp_age(us_females,
-#   method = "arriaga3", age_col = "Age", e1 = "e1x",
-#   e2 = "e2x", l1 = "l1x", l2 = "l2x"
-# )
 
 .arriaga3 <- function(df, age_col, e1, e2, l1, l2) {
   df |> mutate(
@@ -109,62 +104,61 @@ decomp_age <- function(df, method = "arriaga3", age_col, e1, e2, l1, l2, append 
 
 ## method = pollard III
 
-## us_females
-library(dplyr)
-
-.pollards3 <- function(df, age_col, nm1x, l1x, e1x, nm2x, l2x, e2x) {
-  n <- nrow(df)
-
-  # Add interval width (5-year intervals)
-  df <- df %>%
-    dplyr::filter(df[[age_col]] %in% c(0, 5, 15, 25, 45, 65, "85+")) %>%
-    dplyr::mutate(interval_width = dplyr::case_when(
-      .data[[age_col]] == "85+" ~ 10,
-      TRUE ~ 5
-    ))
-
-  # Create next age group values
-  df <- dplyr::mutate(df,
-    lx1_next = c(.data[[l1x]][-1], utils::tail(.data[[l1x]], 1)),
-    ex1_next = c(.data[[e1x]][-1], utils::tail(.data[[e1x]], 1)),
-    lx2_next = c(.data[[l2x]][-1], utils::tail(.data[[l2x]], 1)),
-    ex2_next = c(.data[[e2x]][-1], utils::tail(.data[[e2x]], 1))
-  )
-
-  # Pollards III method
-  df <- dplyr::mutate(df,
-    exclusive_effect = (.data[[nm1x]] - .data[[nm2x]]) *
-      0.5 * ((.data[[l1x]] * .data[[e1x]]) + (.data[[l2x]] * .data[[e2x]])),
-    interaction_effect =
-      (.data[[nm1x]] - .data[[nm2x]]) *
-        ((.data[[e2x]] - .data[[e1x]]) * (.data[[l1x]] - .data[[l2x]])),
-    total_effect = .data$exclusive_effect + .data$interaction_effect
-  )
-
-  output <- dplyr::select(df,
-    age = dplyr::all_of(age_col),
-    exclusive_effect,
-    interaction_effect,
-    total_effect
-  )
-
-  total_row <- tibble::tibble(
-    age = "Total",
-    exclusive_effect = sum(output$exclusive_effect, na.rm = TRUE),
-    interaction_effect = sum(output$interaction_effect, na.rm = TRUE),
-    total_effect = sum(output$total_effect, na.rm = TRUE)
-  )
-
-  output <- dplyr::bind_rows(output, total_row)
-
-  return(output)
-}
-
-# test <- decomp_age(
-#   us_females,
-#   method = "pollards3",
-#   age_col = "Age"
-# )
+# .pollards3 <- function(df, age_col, nm1x, l1x, e1x, nm2x, l2x, e2x) {
+#   n <- nrow(df)
+#
+#   # Add interval width (5-year intervals)
+#   df <- df %>%
+#     dplyr::filter(df[[age_col]] %in% c(0, 5, 15, 25, 45, 65, "85+")) %>%
+#     dplyr::mutate(interval_width = dplyr::case_when(
+#       .data[[age_col]] == "85+" ~ 10,
+#       TRUE ~ 5
+#     ))
+#
+#   # Create next age group values
+#   df <- dplyr::mutate(df,
+#     lx1_next = c(.data[[l1x]][-1], utils::tail(.data[[l1x]], 1)),
+#     ex1_next = c(.data[[e1x]][-1], utils::tail(.data[[e1x]], 1)),
+#     lx2_next = c(.data[[l2x]][-1], utils::tail(.data[[l2x]], 1)),
+#     ex2_next = c(.data[[e2x]][-1], utils::tail(.data[[e2x]], 1))
+#   )
+#
+#   # Pollards III method
+#   df <- dplyr::mutate(df,
+#     exclusive_effect = (.data[[nm1x]] - .data[[nm2x]]) *
+#       (0.5 * ((.data[[l1x]] * .data[[e1x]]) + (.data[[l2x]] * .data[[e2x]]))),
+#     # interaction_effect = {
+#     #   integrand <- function(x) {
+#     #     (.data[[nm1x]] - .data[[nm2x]]) *
+#     #       (((.data[[e2x]] - .data[[e1x]]) * (.data[[l1x]] - .data[[l2x]]) / 2))
+#     #   }
+#     #
+#     #   integrate(integrand, lower = 0, upper = Inf)
+#     # },
+#     interaction_effect =
+#       (.data[[nm1x]] - .data[[nm2x]]) *
+#         (((.data[[e2x]] - .data[[e1x]]) * (.data[[l1x]] - .data[[l2x]]) / 2)),
+#     total_effect = .data$exclusive_effect + .data$interaction_effect
+#   )
+#
+#   output <- dplyr::select(df,
+#     age = dplyr::all_of(age_col),
+#     exclusive_effect,
+#     interaction_effect,
+#     total_effect
+#   )
+#
+#   total_row <- tibble::tibble(
+#     age = "Total",
+#     exclusive_effect = sum(output$exclusive_effect, na.rm = TRUE),
+#     interaction_effect = sum(output$interaction_effect, na.rm = TRUE),
+#     total_effect = sum(output$total_effect, na.rm = TRUE)
+#   )
+#
+#   output <- dplyr::bind_rows(output, total_row)
+#
+#   return(output)
+# }
 
 .chandrasekaran1 <- function(df, age_col, e1, e2, l1, l2) {
   df |> mutate(
