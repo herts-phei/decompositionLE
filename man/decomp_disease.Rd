@@ -41,3 +41,7 @@ A data frame with attached life expectancy disease breakdown decomposition value
 \description{
 Function for performing life expectancy decomposition for disease groups
 }
+\examples{
+decomp_disease(india_china_males_1990,
+
+}

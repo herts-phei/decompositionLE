@@ -14,8 +14,7 @@
 #' @returns A data frame with attached life expectancy disease breakdown decomposition values
 #' @export
 #'
-#' @examples
-# decomp_disease(india_china_males_1990,
+#' @examples decomp_disease(india_china_males_1990,
 #   breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
 #   group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
 #   group_2_m = "China_nmx", nDx = "nDx"

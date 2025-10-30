@@ -29,3 +29,6 @@ A data frame with attached life expectancy age breakdown decomposition values
 \description{
 Function for performing life expectancy decomposition for age bands
 }
+\examples{
+decomp_age(us_females,
+}

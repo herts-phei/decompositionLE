@@ -14,8 +14,7 @@
 #' @returns A data frame with attached life expectancy age breakdown decomposition values
 #' @export
 #'
-#' @examples
-# decomp_age(us_females,
+#' @examples decomp_age(us_females,
 #   method = "arriaga3", age_col = "Age", e1 = "e1x",
 #   e2 = "e2x", l1 = "l1x", l2 = "l2x"
 # )
