@@ -61,7 +61,8 @@ us_females
 The dataset demonstrates usage of `decomp_age()`.
 
 ``` r
-decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+decomp_age(us_females, method = "arriaga3", 
+           age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
 #>    Age     nm1x     l1x   e1x     nm2x     l2x   e2x direct_effect
 #> 1    0 0.047139 1.00000 63.32 0.006830 1.00000 79.00    0.02645220
 #> 2    1 0.004157 0.95458 65.32 0.000358 0.99321 78.54    0.03890153
@@ -105,8 +106,9 @@ decomp_age(us_females, method = "arriaga3", age_col = "Age", e1 = "e1x", e2 = "e
 ```
 
 The package also contains a built-in dataset of age and cause
-decomposition of difference in Life Expectancies at birth, for males in India and
-China in 1990 (`india_china_males_1990`) which breaks down deaths from communicable (CD), non-communicable (NCD), and injuries causes. Data is sourced from *Preston, S.H., Heuveline, P. and Guillot, M. (2001)*.
+decomposition of difference in Life Expectancies at birth, for India and
+China, males, 1990, `india_china_males_1990`, sourced from *Murray,
+C.J.L. and Lopez, A.D. (1996)*.
 
 ``` r
 india_china_males_1990
@@ -132,7 +134,8 @@ The dataset demonstrates usage of `decomp_disease()`.
 
 ``` r
 decomp_disease(india_china_males_1990,
-  breakdown = "proportion", diseases = c("CD", "NCD", "Injuries"),
+  breakdown = "proportion", age_col = "Age",
+  diseases = c("CD", "NCD", "Injuries"),
   group_1 = "India", group_1_m = "India_nmx", 
   group_2 = "China", group_2_m = "China_nmx", 
   nDx = "nDx"
