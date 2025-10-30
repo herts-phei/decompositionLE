@@ -36,16 +36,8 @@ decomp_disease(
 \item{nDx}{Column name for contribution of all-cause mortality differences in groups 1 and 2 in age groups x to x + n. Computationally the same as the total effect column computed from \code{decomp_LE()}.}
 }
 \value{
-A data frame with life expectancy disease breakdown decomposition values
+A data frame with attached life expectancy disease breakdown decomposition values
 }
 \description{
 Function for performing life expectancy decomposition for disease groups
-}
-\examples{
-decomp_disease(india_china_males_1990,
-  breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
-  group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
-  group_2_m = "China_nmx", nDx = "nDx"
-)
-
 }

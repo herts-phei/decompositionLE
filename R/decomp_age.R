@@ -11,14 +11,14 @@
 #' @param l2 Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.
 #' @param append Whether to append the decomposition columns to the original data frame.
 #'
-#' @returns A data frame with attached life expectancy decomposition values
+#' @returns A data frame with attached life expectancy age breakdown decomposition values
 #' @export
 #'
 #' @examples
-#' decomp_age(us_females,
-#'   method = "arriaga3", age_col = "Age", e1 = "e1x",
-#'   e2 = "e2x", l1 = "l1x", l2 = "l2x"
-#' )
+# decomp_age(us_females,
+#   method = "arriaga3", age_col = "Age", e1 = "e1x",
+#   e2 = "e2x", l1 = "l1x", l2 = "l2x"
+# )
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate case_when lead

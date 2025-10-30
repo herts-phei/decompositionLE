@@ -24,14 +24,8 @@ decomp_age(df, method = "arriaga3", age_col, e1, e2, l1, l2, append = TRUE)
 \item{append}{Whether to append the decomposition columns to the original data frame.}
 }
 \value{
-A data frame with attached life expectancy decomposition values
+A data frame with attached life expectancy age breakdown decomposition values
 }
 \description{
 Function for performing life expectancy decomposition for age bands
-}
-\examples{
-decomp_age(us_females,
-  method = "arriaga3", age_col = "Age", e1 = "e1x",
-  e2 = "e2x", l1 = "l1x", l2 = "l2x"
-)
 }
