@@ -1,28 +1,37 @@
-#' Title plot.disease
+#' Title plot_disease
 #'
 #' Plot disease decomposition breakdown
 #'
 #' @description
-#' S3 method for \code{plot()} that visualizes disease-related deltas from a data frame.
+#' Visualize disease-related deltas from a data frame.
 #' It pivots columns starting with \code{"delta"} and ending with user-specified suffixes
-#' (e.g., \code{c("CD", "NCD", "Injuries")}) into a long format and creates a formatted bar plot.
+#' (e.g., \code{c("CD", "NCD", "Injuries")}) into a long format and creates a formatted stacked bar plot.
 #'
 #' @param x A data frame containing `decomp_disease()` output.
-#' @param suffixes A character vector of disease suffixes to match (e.g., \code{c("CD", "NCD", "Injuries")}).
+#' @param suffixes A character vector of disease suffixes to match (e.g., \code{c("CD", "NCD", "Injuries")}). Essentially the same as `diseases` argument in `decomp_disease()`.
 #' @param nDx Column name for contribution of all-cause mortality differences in groups 1 and 2 in age groups x to x + n.
 #' @param line Logical for additional line geom showing total effect. TRUE by default.
 #'
 #' @return A \code{ggplot} object showing disease breakdown values
 #' @export
-#' @method plot disease
 #'
 #' @examples
+#'
+#' disease_data <- decomp_disease(india_china_males_1990,
+#'   breakdown = "proportion", age_col = "Age", diseases = c("CD", "NCD", "Injuries"),
+#'   group_1 = "India", group_1_m = "India_nmx", group_2 = "China",
+#'   group_2_m = "China_nmx", nDx = "nDx"
+#' )
+#'
+#' plot_disease(disease_data, c("delta_CD", "delta_NCD", "delta_Injuries"), "nDx", line = FALSE)
+#' plot_disease(disease_data, c("delta_CD", "delta_NCD", "delta_Injuries"), "nDx", line = TRUE)
+#'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr select rename mutate
-#' @importFrom ggplot2 ggplot aes geom_col geom_line labs scale_fill_brewer scale_color_manual
+#' @importFrom ggplot2 ggplot aes geom_col geom_line labs scale_fill_brewer scale_color_manual theme_minimal
 #' @importFrom rlang enquo
 
-plot.disease <- function(x, suffixes, nDx, line = TRUE, ...) {
+plot_disease <- function(x, suffixes, nDx, line = TRUE) {
   stopifnot(is.data.frame(x), is.character(suffixes))
 
   df_long <- x %>%
@@ -43,7 +52,8 @@ plot.disease <- function(x, suffixes, nDx, line = TRUE, ...) {
     ggplot(aes(Age, delta_value, fill = disease)) +
     geom_col() +
     labs(x = "Starting age of age band", y = "Contribution of difference (years)", colour = NULL, fill = "Component") +
-    scale_fill_brewer(palette = "Paired")
+    scale_fill_brewer(palette = "Paired") +
+    theme_minimal()
 
 
   if (line) {
@@ -54,5 +64,3 @@ plot.disease <- function(x, suffixes, nDx, line = TRUE, ...) {
 
   return(return_plot)
 }
-
-plot.disease(moo_disease, c("delta_CD", "delta_NCD", "delta_Injuries"), "nDx", line = TRUE)

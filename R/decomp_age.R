@@ -9,7 +9,7 @@
 #' @param e2 Column name for expectation of life at age group x, in the 2nd group of comparison.
 #' @param l1 Column name for the proportion of persons alive at age group x, in the 1st group of comparison.
 #' @param l2 Column name for the proportion of persons alive at age group x, in the 2nd group of comparison.
-#' @param append Whether to append the decomposition columns to the original data frame.
+#' @param append Whether to append the decomposition columns to the original data frame. Default to TRUE.
 #'
 #' @returns A data frame with attached life expectancy age breakdown decomposition values
 #' @export
