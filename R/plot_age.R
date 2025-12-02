@@ -25,7 +25,7 @@
 #' plot_age(age_output, method = "arriaga3", plot_type = "total", line = TRUE)
 #'
 #' @importFrom tidyr pivot_longer
-#' @importFrom dplyr select rename mutate
+#' @importFrom dplyr select rename mutate across
 #' @importFrom ggplot2 ggplot aes geom_col geom_line labs scale_fill_brewer scale_color_manual theme_minimal
 #' @importFrom rlang enquo
 #' @importFrom stringr str_to_title
