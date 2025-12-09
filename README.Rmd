@@ -30,7 +30,7 @@ library(decompositionLE)
 library(tidyverse)
 ```
 
-# decompositionLE
+# decompositionLE <img src="man/figures/logo.png" align="right" height="108" alt="decompositionLE hex logo"/>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/decompositionLE)](https://CRAN.R-project.org/package=decompositionLE)
