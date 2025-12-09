@@ -4,7 +4,7 @@
 #'
 #' @param df An outputted life table with columns for age bands, number of persons alive at each age band and expectation of life at each age band
 #' @param method Methods to use for life expectancy decomposition. Defaults to 'arriaga3'. Current methods available are: 'arriaga3', 'chandrasekaran1', 'chandrasekaran2'.
-#' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffxied with '+', e.g. '90+'.. Of factor type.
+#' @param age_col Column providing ordered age bands with the final age group being an open-ended interval suffixed with '+', e.g. '90+'.. Of factor type.
 #' @param e1 Column name for expectation of life at age group x, in the 1st group of comparison.
 #' @param e2 Column name for expectation of life at age group x, in the 2nd group of comparison.
 #' @param l1 Column name for the proportion of persons alive at age group x, in the 1st group of comparison.
