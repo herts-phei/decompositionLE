@@ -4,13 +4,27 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+
+knitr::opts_chunk$set(
+  warning    = FALSE,
+  fig.align  = "center",
+  dpi        = 240,
+  fig.width  = 10,
+  fig.height = 4.5,
+  out.width  = "100%",
+  fig.retina = 2,
+  dev        = "png",
+  cache      = FALSE
+)
+
 
 library(decompositionLE)
 library(tidyverse)
@@ -36,6 +50,8 @@ devtools::install_github("herts-phei/decompositionLE")
 
 ## Example
 
+### Age decomposition
+
 The package contains a built-in dataset of life table values for US women born in 1935 and 1995, `us_females`, sourced from *Ponnapalli, K. (2005)*.
 
 ```{r}
@@ -45,9 +61,31 @@ us_females
 The dataset demonstrates usage of `decomp_age()`.
 
 ```{r}
-decomp_age(us_females, method = "arriaga3", 
+age_output <- decomp_age(us_females, method = "arriaga3", 
            age_col = "Age", e1 = "e1x", e2 = "e2x", l1 = "l1x", l2 = "l2x")
+
+age_output
 ```
+
+In `decomp_age()`, there are several methods currently available: `arriaga3`, `chandrasekaran1` or `chandrasekaran2`. Functionally, they produce close to identical results, but the output variables are different.
+
+`age_col` should be a factor column providing ordered age bands with the final age group being an open-ended interval suffixed with '+', e.g. `90+`. `e1` and `l1` correspond to the expectation of life at age group x, and the proportion of persons alive at age group x in decimal form, in the first group of comparison, and likewise for `e2` and `l2` for the second group of comparison.
+
+There is also a helpful plot function for output from `decomp_age()` offering a variety of basic ggplot2 style plots.
+
+```{r, warning=FALSE}
+library(patchwork)
+
+plot1 <- plot_age(age_output, method = "arriaga3", plot_type = "segment_dodge")
+plot2 <- plot_age(age_output, method = "arriaga3", plot_type = "segment_dodge", line = TRUE)
+plot3 <- plot_age(age_output, method = "arriaga3", plot_type = "total", line = TRUE)
+
+plot1
+plot2
+plot3
+```
+
+### Disease decomposition
 
 The package also contains a built-in dataset of age and cause decomposition of difference in Life Expectancies at birth, for India and China, males, 1990, `india_china_males_1990`, sourced from *Murray, C.J.L. and Lopez, A.D. (1996)*.
 
@@ -58,13 +96,54 @@ india_china_males_1990
 The dataset demonstrates usage of `decomp_disease()`.
 
 ```{r cols.print=9999, rows.print=9999}
-decomp_disease(india_china_males_1990,
-  breakdown = "proportion", age_col = "Age",
+disease_output <- decomp_disease(india_china_males_1990,
+  breakdown = "proportion", 
+  age_col = "Age",
   diseases = c("CD", "NCD", "Injuries"),
   group_1 = "India", group_1_m = "India_nmx", 
   group_2 = "China", group_2_m = "China_nmx", 
   nDx = "nDx"
 )
+
+disease_output
+```
+
+The `diseases` argument provides the function with suffixes of relevant diseases found in both groups of interest. `breakdown` is for whether disease breakdowns are `raw` mortality rates or a decimal `proportion` of the total all-cause mortality rate. For example, in the `india_china_males_1990` dataset which has decimal proportion breakdowns:
+
+```{r cols.print=9999, rows.print=9999}
+india_china_males_1990[1,]
+```
+
+At birth, the components which make up India's all-cause mortality in the dataset:
+
+```{r} 
+india_birth_components_equal_1 <- india_china_males_1990[1,c("India_CD", "India_NCD", "India_Injuries")]
+
+all.equal(sum(india_birth_components_equal_1), 1, tolerance = 1e-3)
+```
+
+Within tolerance, is equal to 1. Likewise, for China all-cause mortality at birth:
+
+```{r} 
+china_birth_components_equal_1 <- india_china_males_1990[1,c("China_CD", "China_NCD", "China_Injuries")]
+
+all.equal(sum(china_birth_components_equal_1), 1, tolerance = 1e-3)
+```
+
+However raw disease breakdowns are also accepted if provided, but these disease breakdowns should then equal the value provided in the column for the all-cause mortality rate for the specified group instead, not 1.
+
+Likewise in `decomp_age()`, `age_col` should be a factor column providing ordered age bands with the final age group being an open-ended interval suffixed with '+'.
+
+The `diseases` argument specifies a character vector of the diseases found in both groups, and should be suffixed at the end of the names given in `group_1` and `group_2` in the dataset. In `india_china_males_1990`, these are: `c("CD", "NCD", "Injuries")`.
+
+There is a also a helper plot function for disease decomposition output, `plot_disease()`:
+
+```{r}
+
+plot_disease(x = disease_output, suffixes = c("delta_CD", "delta_NCD", "delta_Injuries"), nDx = "nDx", line = FALSE) 
+
+plot_disease(x = disease_output, suffixes = c("delta_CD", "delta_NCD", "delta_Injuries"), nDx = "nDx", line = TRUE)
+
 ```
 
 ## References
